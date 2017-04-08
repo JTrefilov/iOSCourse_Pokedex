@@ -27,11 +27,38 @@ class PokemonDetailVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        nameLabel.text = chosenPokemon.name
+        
+        chosenPokemon.downloadPokemonDetails {
+            // Updating label values
+            self.updateUI()
+        }
+        
+        nameLabel.text = chosenPokemon.name.capitalized
+        pokedexIDLabel.text = "\(chosenPokemon.pokedexID)"
+        mainImage.image = UIImage(named: "\(chosenPokemon.pokedexID)")
+        currentEvoImage.image = mainImage.image 
     }
     
-    // Returning to main view controller
+    //  This is how we assign the downloaded data to labels
+    func updateUI(){
+        descriptionLabel.text = chosenPokemon.description
+        typeLabel.text = chosenPokemon.type
+        defenseLabel.text = chosenPokemon.defense
+        heightLabel.text = chosenPokemon.height
+        weightLabel.text = chosenPokemon.weight
+        attackLabel.text = chosenPokemon.attack
+        
+        if chosenPokemon.nextEvolutionName == "" {
+            evoLabel.text = "This is the last evolution"
+        } else{
+            evoLabel.text = "Next Evolution: \(chosenPokemon.nextEvolutionName.capitalized) \(chosenPokemon.nextEvolutionLevel) LVL"
+        }
+        
+        nextEvoImage.image = UIImage(named: "\(chosenPokemon.nextEvolutionID)")
+    }
+    
+    
+    //  Returning to main view controller
     @IBAction func backButtonPressed(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
